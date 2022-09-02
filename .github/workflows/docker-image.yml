@@ -14,5 +14,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER}}
+        DOCKER_PW: ${{ secrets.DOCKER_PW}}
+      run: 
+        docker login -u $DOCKER_USER -p $DOCKER_PW
+        
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build ./myaction  -t luckodjo/myjava:1.0.0
+      
+    - name: docker push
+      run: docker push luckodjo/myjava:1.0.0
